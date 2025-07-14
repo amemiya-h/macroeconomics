@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import Plot from "react-plotly.js";
 
 export default function OdeViewer() {
-    const [s, setS] = useState(1);
+    const [s, setS] = useState(0.6);
     const [a, setA] = useState(0.5);
-    const [d, setD] = useState(0.2);
+    const [d, setD] = useState(0.1);
 
     const dt = 0.01;
     const windowSize = 5; // seconds
@@ -100,7 +100,7 @@ export default function OdeViewer() {
 
     const yMax = Math.max(...plotData.p, 1); // fallback min max =1 to avoid zero range
     const yMargin = yMax * 0.1;
-    const yRange = [0, kMax + yMargin];
+    const yRange = [0, yMax + yMargin];
 
     return (
         <div>
@@ -115,11 +115,11 @@ export default function OdeViewer() {
                 <input type="range" min="0" max="1" step="0.01" value={a} onChange={e => setA(+e.target.value)} />
             </div>
             <Plot
-                data={[{ x: plotData.t, y: plotData.k, type: "scatter", mode: "lines", name: "k(t)" }]}
+                data={[{ x: plotData.t, y: plotData.k, type: "scatter", mode: "lines", name: "k(t)", line: { width: 3 }, }]}
                 layout={{
                     width: 600,
-                    height: 400,
-                    title: { text: "Capital" },
+                    height: 600,
+                    title: { text: "Capital" , font: { size: 22 }},
                     yaxis: {
                         range: kRange, // fixes y-axis lower bound to 0, upper bound auto
                         autorange: false,
@@ -128,14 +128,14 @@ export default function OdeViewer() {
             />
             <Plot
                 data={[
-                    { x: plotData.t, y: plotData.c, type: "scatter", mode: "lines", name: "investment" },
-                    { x: plotData.t, y: plotData.i, type: "scatter", mode: "lines", name: "consumption" },
-                    { x: plotData.t, y: plotData.p, type: "scatter", mode: "lines", name: "production" }
+                    { x: plotData.t, y: plotData.c, type: "scatter", mode: "lines", name: "investment", line: { width: 3 },},
+                    { x: plotData.t, y: plotData.i, type: "scatter", mode: "lines", name: "consumption", line: { width: 3 }, },
+                    { x: plotData.t, y: plotData.p, type: "scatter", mode: "lines", name: "production", line: { width: 3 }, }
                 ]}
                 layout={{
                     width: 600,
-                    height: 400,
-                    title: { text: "Output" },
+                    height: 600,
+                    title: { text: "Output" , font: { size: 22 }},
                     yaxis: {
                         range: yRange, // fixes y-axis lower bound to 0, upper bound auto
                         autorange: false,
